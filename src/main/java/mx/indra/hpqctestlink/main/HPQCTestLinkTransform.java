@@ -28,7 +28,7 @@ public class HPQCTestLinkTransform {
 		File excelFile = new File(EXCEL_FILE_LOCATION);
 		if (excelFile.exists()) {
 			try {
-				LOG.info("PROCESANDO ARCHIVO : " + excelFile.getName());
+				LOG.info("PROCESANDO ARCHIVO: " + excelFile.getName());
 				FileInputStream inputStream = new FileInputStream(excelFile);
 				Workbook workbook = new XSSFWorkbook(inputStream);
 				Sheet firstSheet = workbook.getSheetAt(1);
