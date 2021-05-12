@@ -1,4 +1,4 @@
-package mx.indra.hpqctestlin.beans;
+package mx.indra.hpqctestlink.beans;
 
 public class Action {
 	
