@@ -23,7 +23,7 @@ public class HPQCTestLinkTransform {
 	
 	public static void main(String[] args){
 		
-		LOG.info("Ubicacion del archivo de origen : "+args[0]);  
+		//LOG.info("Ubicacion del archivo de origen : "+args[0]);  
 		
 		File excelFile = new File(EXCEL_FILE_LOCATION);
 		if (excelFile.exists()) {
