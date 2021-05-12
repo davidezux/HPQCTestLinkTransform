@@ -1,4 +1,4 @@
-package mx.indra.converter.xlstoxml.beans;
+package mx.indra.hpqctestlin.beans;
 
 public class TestCase {
 	
