@@ -4,27 +4,16 @@ import java.util.ArrayList;
 
 public class MTCP {
 	
-	private String name;
-	private String version;
-	private String summary;
-	private String preconditions;
-	private String executionType;
-	private String executionType2;
-	private String importance;
-	private String estimatedExecDuration;
-	private String expectedResults;
+	private ArrayList<TestCase> testCases;
 
-	private ArrayList<Actions> actions;
-
-	public ArrayList<Actions> getActions() {
-		return actions;
+	public ArrayList<TestCase> getTestCases() {
+		return testCases;
 	}
 
-	public void setActions(ArrayList<Actions> actions) {
-		this.actions = actions;
+	public void setTestCases(ArrayList<TestCase> testCases) {
+		this.testCases = testCases;
 	}
 	   
-	  
-	  
+
 }
 
