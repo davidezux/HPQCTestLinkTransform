@@ -32,7 +32,7 @@ public class HPQCTestLinkTransform {
 				MTCP mtcp = hpqcxlsProcessService.processXLS(excelFile);
 
 				LOG.info("LIST SIZE " + mtcp.getTestCases().size());
-
+	
 				for (int i = 0; i < mtcp.getTestCases().size(); i++) {
 					System.out.println("Test case : " + i);
 					System.out.println("name : " + mtcp.getTestCases().get(i).getName());
@@ -44,12 +44,12 @@ public class HPQCTestLinkTransform {
 					System.out.println("estimatedExecDuration: " + mtcp.getTestCases().get(i).getEstimatedExecDuration());
 					System.out.println("steps: ");
 					
-					for(int j=0; j < mtcp.getTestCases().get(i).getSteps().size(); j++) {
+					/*for(int j=0; j < mtcp.getTestCases().get(i).getSteps().size(); j++) {
 						System.out.println(mtcp.getTestCases().get(i).getSteps().get(j).getStepNumber());
 						System.out.println(mtcp.getTestCases().get(i).getSteps().get(j).getActions());
 						System.out.println(mtcp.getTestCases().get(i).getSteps().get(j).getExpectedResults());
 						System.out.println(mtcp.getTestCases().get(i).getSteps().get(j).getExecutionType2());
-					}
+					}*/
 
 				}
 
