@@ -18,9 +18,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import mx.indra.hpqctestlink.beans.MTCP;
 import mx.indra.hpqctestlink.beans.testlink.Step;
 import mx.indra.hpqctestlink.beans.testlink.TestCase;
 import mx.indra.hpqctestlink.beans.testlink.XmlRoot;
+import mx.indra.hpqctestlink.converter.MTCPTOXmlRoot;
 
 public class BuildXMLServiceImpl implements BuildXMLService {
 
@@ -82,10 +84,7 @@ public class BuildXMLServiceImpl implements BuildXMLService {
 		return testCases;
 	}
 
-	public boolean processXLS(List<TestCase> testCases, String outPutPath) throws Exception {
-		LOG.info("TEST CASES: " + testCases.size());
-		XmlRoot xmlRoot = new XmlRoot();
-		xmlRoot.setTestCases(testCases);
+	public boolean processXLS(XmlRoot xmlRoot, String outPutPath) throws Exception {
 		try {
 			LOG.info("GENERANDO XML");
 			JAXBContext jaxbContext = JAXBContext.newInstance(XmlRoot.class);
@@ -101,8 +100,11 @@ public class BuildXMLServiceImpl implements BuildXMLService {
 		return true;
 	}
 
-	
-	
+	public boolean processTestCases(MTCP mtcp, String outPutPath) throws Exception {
+		processXLS(MTCPTOXmlRoot.processTestCases(mtcp), outPutPath);
+		return true;
+	}
+
 	private void printList(List<TestCase> testCases) {
 		for (TestCase testCase : testCases) {
 			LOG.info("testCase: " + testCase.getName());
@@ -119,5 +121,4 @@ public class BuildXMLServiceImpl implements BuildXMLService {
 		}
 	}
 
-	
 }
