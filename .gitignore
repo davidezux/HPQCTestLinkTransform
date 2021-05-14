@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+/target/
+=======
 
 # Created by https://www.toptal.com/developers/gitignore/api/maven
 # Edit at https://www.toptal.com/developers/gitignore?templates=maven
@@ -17,3 +20,4 @@ buildNumber.properties
 .flattened-pom.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/maven
+>>>>>>> e3c983fd072032b200ac0179d7538ab530622a16
