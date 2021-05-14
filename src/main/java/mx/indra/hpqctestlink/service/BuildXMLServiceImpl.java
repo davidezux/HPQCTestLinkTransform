@@ -83,7 +83,7 @@ public class BuildXMLServiceImpl implements BuildXMLService {
 	}
 
 	public boolean processXLS(List<TestCase> testCases, String outPutPath) throws Exception {
-		LOG.info("TEST CASES: " + testCases.size()); 
+		LOG.info("TEST CASES: " + testCases.size());
 		XmlRoot xmlRoot = new XmlRoot();
 		xmlRoot.setTestCases(testCases);
 		try {
@@ -101,6 +101,8 @@ public class BuildXMLServiceImpl implements BuildXMLService {
 		return true;
 	}
 
+	
+	
 	private void printList(List<TestCase> testCases) {
 		for (TestCase testCase : testCases) {
 			LOG.info("testCase: " + testCase.getName());
@@ -111,12 +113,11 @@ public class BuildXMLServiceImpl implements BuildXMLService {
 			LOG.info("Importance: " + testCase.getImportance());
 			LOG.info("EstimatedExecDuration: " + testCase.getEstimatedExecDuration());
 			for (Step step : testCase.getSteps()) {
-				LOG.info("		StepNumber: " + step.getStepNumber());
-				LOG.info("		Actions: " + step.getActions());
-				LOG.info("		Expectedresults: " + step.getExpectedresults());
-				LOG.info("		ExecutionType: " + step.getExecutionType());
+				LOG.info("	 Step: " + step.getStepNumber() + " - " + step.getActions() + " - "
+						+ step.getExpectedresults() + " - " + step.getExecutionType());
 			}
 		}
 	}
 
+	
 }
