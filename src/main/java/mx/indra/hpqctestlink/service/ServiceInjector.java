@@ -6,6 +6,8 @@ public class ServiceInjector {
 		return new HPQCXLSProcessServiceImpl();
 	}
 	
-	
+	public UtilService getUtilService() {
+		return new UtilServiceImpl();
+	}
 	
 }

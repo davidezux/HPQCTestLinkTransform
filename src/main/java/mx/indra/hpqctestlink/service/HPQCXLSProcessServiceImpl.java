@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -14,14 +15,16 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mx.indra.hpqctestlink.beans.Step;
 import mx.indra.hpqctestlink.beans.MTCP;
+import mx.indra.hpqctestlink.beans.Step;
 import mx.indra.hpqctestlink.beans.TestCase;
 
 public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(HPQCXLSProcessServiceImpl.class);
-
+	private ServiceInjector serviceInjector;
+	private UtilService utilService;
+	
 	public MTCP processXLS(File excelFile) throws Exception {
 	
 		MTCP mtcp = new MTCP();
@@ -66,19 +69,28 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 							} else if (columnIndex == 4) {
 
 								StringTokenizer tokens = new StringTokenizer(celldata.getStringCellValue(), "\n");
-								int i =0;
+								List<String> headers = new ArrayList<String>();
+								List<String> steps = new ArrayList<String>();
+								
 								while (tokens.hasMoreTokens()) {
-									Step step = new Step();
-									step.setStepNumber(new Long(i));
-									step.setActions(tokens.nextToken());
-									listSteps.add(step);
-									i++;
+									String line = tokens.nextToken();
+									if(line.trim().endsWith(":")) {
+										//System.out.println(line);
+										
+										headers.add(line);
+									}else {
+										steps.add(line);
+									}
 								}
+								
+								serviceInjector = new ServiceInjector();
+								utilService = serviceInjector.getUtilService();
+								listSteps = utilService.getSteps(headers,steps);
+								
 
 							} else if (columnIndex == 5) {
 
 								for (int i = 0; i < listSteps.size(); i++) {
-									//listSteps.get(i).setStepNumber(new Long(i));
 									listSteps.get(i).setExpectedResults(celldata.getStringCellValue());
 								}
 
@@ -136,5 +148,7 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 
 		return mtcp;
 	}
+	
+	
 
 }
