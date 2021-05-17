@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import mx.indra.hpqctestlink.beans.Step;
 import mx.indra.hpqctestlink.beans.MTCP;
-import mx.indra.hpqctestlink.service.BuildXMLServiceImpl;
 import mx.indra.hpqctestlink.service.HPQCXLSProcessService;
 import mx.indra.hpqctestlink.service.ServiceInjector;
 
@@ -21,7 +20,7 @@ public class HPQCTestLinkTransform {
 
 	public static void main(String[] args) {
 		// LOG.info("Ubicacion del archivo de origen : "+args[0]);
-		// LOG.info("Ubicacion destino: "+ args[1]);
+		// LOG.info("Ubicacion destino: "+args[1]);
 		File excelFile = new File(EXCEL_FILE_LOCATION);
 		if (excelFile.exists()) {
 
@@ -30,15 +29,15 @@ public class HPQCTestLinkTransform {
 			hpqcxlsProcessService = serviceInjector.getHPQCXLSProcessService();
 			try {
 
-				MTCP mtcp = hpqcxlsProcessService.processXLS(excelFile); 
+				MTCP mtcp = hpqcxlsProcessService.processXLS(excelFile);
 				
 				// GENERA XML
 				String outPutPath = excelFile.getParent() + "/" + excelFile.getName().split("\\.")[0] + ".xml";
 				BuildXMLServiceImpl buildXMLServiceImpl = new BuildXMLServiceImpl();
 				buildXMLServiceImpl.processTestCases(mtcp, outPutPath);
-				
-				LOG.info("LIST SIZE " + mtcp.getTestCases().size());
 
+				LOG.info("LIST SIZE " + mtcp.getTestCases().size());
+	
 				for (int i = 0; i < mtcp.getTestCases().size(); i++) {
 					System.out.println("Test case : " + i);
 					System.out.println("name : " + mtcp.getTestCases().get(i).getName());
@@ -50,12 +49,12 @@ public class HPQCTestLinkTransform {
 					System.out.println("estimatedExecDuration: " + mtcp.getTestCases().get(i).getEstimatedExecDuration());
 					System.out.println("steps: ");
 					
-					for(int j=0; j < mtcp.getTestCases().get(i).getSteps().size(); j++) {
+					/*for(int j=0; j < mtcp.getTestCases().get(i).getSteps().size(); j++) {
 						System.out.println(mtcp.getTestCases().get(i).getSteps().get(j).getStepNumber());
 						System.out.println(mtcp.getTestCases().get(i).getSteps().get(j).getActions());
 						System.out.println(mtcp.getTestCases().get(i).getSteps().get(j).getExpectedResults());
 						System.out.println(mtcp.getTestCases().get(i).getSteps().get(j).getExecutionType2());
-					}
+					}*/
 
 				}
 
