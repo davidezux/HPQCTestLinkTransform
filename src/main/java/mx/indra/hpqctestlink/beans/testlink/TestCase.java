@@ -1,40 +1,43 @@
 package mx.indra.hpqctestlink.beans.testlink;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "TestCase")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TestCase {
 
-    @XmlElement(name="name")
+	@XmlAttribute
 	private String name;
-    
-    @XmlElement(name="version")
+
+	@XmlElement
 	private String version;
 
-    @XmlElement(name="summary")
+	@XmlElement
 	private String summary;
 
-    @XmlElement(name="preconditions")
+	@XmlElement
 	private String preconditions;
 
-    @XmlElement(name="executionType")
+	@XmlElement(name = "execution_type")
 	private String executionType;
 
-    @XmlElement(name="importance")
+	@XmlElement
 	private String importance;
 
-    @XmlElement(name="estimatedExecDuration")
+	@XmlElement(name = "estimated_exec_duration")
 	private String estimatedExecDuration;
 
-    @XmlElement(name="steps")
-	private ArrayList<Step> steps;
+	@XmlElementWrapper(name="steps")
+	@XmlElement(name="step")
+	private List<Step> steps = new ArrayList<Step>();
 
 	public String getName() {
 		return name;
@@ -92,11 +95,11 @@ public class TestCase {
 		this.estimatedExecDuration = estimatedExecDuration;
 	}
 
-	public ArrayList<Step> getSteps() {
+	public List<Step> getSteps() {
 		return steps;
 	}
 
-	public void setSteps(ArrayList<Step> steps) {
+	public void setSteps(List<Step> steps) {
 		this.steps = steps;
 	}
 

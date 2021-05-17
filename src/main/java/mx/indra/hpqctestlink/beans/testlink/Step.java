@@ -1,37 +1,57 @@
 package mx.indra.hpqctestlink.beans.testlink;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "name")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Step {
 
-	private Long step_number;
+	@XmlElement(name="step_number")
+	private int stepNumber;
+
+	@XmlElement
 	private String actions;
+
+	@XmlElement
 	private String expectedresults;
-	private String execution_type;
+
+	@XmlElement(name = "execution_type")
+	private String executionType;
+ 
+
+	public void setStepNumber(int stepNumber) {
+		this.stepNumber = stepNumber;
+	}
 	
-	public Long getStep_number() {
-		return step_number;
+	public int getStepNumber() {
+		return stepNumber;
 	}
-	public void setStep_number(Long step_number) {
-		this.step_number = step_number;
-	}
+
 	public String getActions() {
 		return actions;
 	}
+
 	public void setActions(String actions) {
 		this.actions = actions;
 	}
+
 	public String getExpectedresults() {
 		return expectedresults;
 	}
+
 	public void setExpectedresults(String expectedresults) {
 		this.expectedresults = expectedresults;
 	}
-	public String getExecution_type() {
-		return execution_type;
+
+	public String getExecutionType() {
+		return executionType;
 	}
-	public void setExecution_type(String execution_type) {
-		this.execution_type = execution_type;
+
+	public void setExecutionType(String executionType) {
+		this.executionType = executionType;
 	}
-	
-	
-	
+
 }
