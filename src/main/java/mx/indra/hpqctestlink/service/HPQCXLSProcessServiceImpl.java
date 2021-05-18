@@ -70,7 +70,7 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 								
 							}else if(columnIndex == 2) {
 								testCase.setName("CP"+celldata.getStringCellValue()+"_");
-							
+								testCase.setNumber(Long.valueOf(celldata.getStringCellValue()));
 								
 							}else if (columnIndex == 3) {
 								String name = testCase.getName() + celldata.getStringCellValue();

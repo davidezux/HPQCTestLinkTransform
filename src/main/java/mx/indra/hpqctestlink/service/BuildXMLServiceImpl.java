@@ -105,20 +105,4 @@ public class BuildXMLServiceImpl implements BuildXMLService {
 		return true;
 	}
 
-	private void printList(List<TestCase> testCases) {
-		for (TestCase testCase : testCases) {
-			LOG.info("testCase: " + testCase.getName());
-			LOG.info("version: " + testCase.getVersion());
-			LOG.info("Summary: " + testCase.getSummary());
-			LOG.info("Preconditions: " + testCase.getPreconditions());
-			LOG.info("ExecutionType: " + testCase.getExecutionType());
-			LOG.info("Importance: " + testCase.getImportance());
-			LOG.info("EstimatedExecDuration: " + testCase.getEstimatedExecDuration());
-			for (Step step : testCase.getSteps()) {
-				LOG.info("	 Step: " + step.getStepNumber() + " - " + step.getActions() + " - "
-						+ step.getExpectedresults() + " - " + step.getExecutionType());
-			}
-		}
-	}
-
 }

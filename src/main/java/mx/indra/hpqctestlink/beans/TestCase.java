@@ -3,7 +3,8 @@ package mx.indra.hpqctestlink.beans;
 import java.util.ArrayList;
 
 public class TestCase {
-	
+
+	private Long number;
 	private String name;
 	private String version;
 	private String summary;
@@ -13,6 +14,16 @@ public class TestCase {
 	private String estimatedExecDuration;
 	private ArrayList<Step> steps;
 	
+	
+	
+	public Long getNumber() {
+		return number;
+	}
+
+	public void setNumber(Long number) {
+		this.number = number;
+	}
+
 	public String getName() {
 		return name;
 	}
