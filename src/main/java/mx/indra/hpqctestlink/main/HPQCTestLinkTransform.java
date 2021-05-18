@@ -1,15 +1,12 @@
 package mx.indra.hpqctestlink.main;
 
 import java.io.File;
-import java.util.Iterator;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mx.indra.hpqctestlink.beans.Step;
 import mx.indra.hpqctestlink.beans.MTCP;
+import mx.indra.hpqctestlink.service.BuildXLSServiceImpl;
 import mx.indra.hpqctestlink.service.BuildXMLServiceImpl;
 import mx.indra.hpqctestlink.service.HPQCXLSProcessService;
 import mx.indra.hpqctestlink.service.ServiceInjector;
@@ -31,13 +28,16 @@ public class HPQCTestLinkTransform {
 			try {
 
 				MTCP mtcp = hpqcxlsProcessService.processXLS(excelFile); 
+				// GENERA EXCEL
+				BuildXLSServiceImpl buildXLSServiceImpl = new BuildXLSServiceImpl();
+				buildXLSServiceImpl.processTestCases(mtcp, excelFile);
 				
 				// GENERA XML
 				String outPutPath = excelFile.getParent() + "/" + excelFile.getName().split("\\.")[0] + ".xml";
 				BuildXMLServiceImpl buildXMLServiceImpl = new BuildXMLServiceImpl();
-				buildXMLServiceImpl.processTestCases(mtcp, outPutPath);
+				//buildXMLServiceImpl.processTestCases(mtcp, outPutPath);
 				
-				LOG.info("LIST SIZE " + mtcp.getTestCases().size());
+				/*LOG.info("LIST SIZE " + mtcp.getTestCases().size());
 
 				for (int i = 0; i < mtcp.getTestCases().size(); i++) {
 					System.out.println("Test case : " + i);
@@ -57,7 +57,7 @@ public class HPQCTestLinkTransform {
 						System.out.println(mtcp.getTestCases().get(i).getSteps().get(j).getExecutionType2());
 					}
 
-				}
+				}*/
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

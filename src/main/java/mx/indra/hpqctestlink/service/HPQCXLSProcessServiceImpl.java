@@ -68,8 +68,13 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 								testCase.setSummary(summary);
 							
 								
+							}else if(columnIndex == 2) {
+								testCase.setName("CP"+celldata.getStringCellValue()+"_");
+							
+								
 							}else if (columnIndex == 3) {
-								testCase.setName(celldata.getStringCellValue());
+								String name = testCase.getName() + celldata.getStringCellValue();
+								testCase.setName(name);
 								// System.out.print(celldata.getStringCellValue());
 							} else if (columnIndex == 4) {
 
