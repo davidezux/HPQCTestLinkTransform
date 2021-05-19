@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XLSTestCaseRoot {
-	
+
 	private List<XLSStep> xlsSteps = new ArrayList<XLSStep>();
 
 	public List<XLSStep> getXlsSteps() {
@@ -14,8 +14,5 @@ public class XLSTestCaseRoot {
 	public void setXlsSteps(List<XLSStep> xlsSteps) {
 		this.xlsSteps = xlsSteps;
 	}
-
-	
-
 
 }

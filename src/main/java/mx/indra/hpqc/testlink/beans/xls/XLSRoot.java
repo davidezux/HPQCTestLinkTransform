@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XLSRoot {
-	
-	private List<XLSTestCaseRoot> xlsTestCases = new ArrayList<XLSTestCaseRoot>();
 
-	public List<XLSTestCaseRoot> getXlsTestCases() {
-		return xlsTestCases;
+	private List<XLSStep> xlsSteps = new ArrayList<XLSStep>();
+
+	public List<XLSStep> getXlsSteps() {
+		return xlsSteps;
 	}
 
-	public void setXlsTestCases(List<XLSTestCaseRoot> xlsTestCases) {
-		this.xlsTestCases = xlsTestCases;
+	public void setXlsSteps(List<XLSStep> xlsSteps) {
+		this.xlsSteps = xlsSteps;
 	}
-	
-	
+
 }

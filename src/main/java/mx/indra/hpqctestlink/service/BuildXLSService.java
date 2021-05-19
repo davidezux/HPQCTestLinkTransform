@@ -7,5 +7,6 @@ import mx.indra.hpqctestlink.beans.MTCP;
 
 public interface BuildXLSService {
 	public boolean buildXLS(XLSRoot xlsRoot, File excelFile) throws Exception;
-	public boolean processTestCases(MTCP mtcp,File excelFile) throws Exception;
+
+	public boolean processTestCases(MTCP mtcp, File excelFile) throws Exception;
 }

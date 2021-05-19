@@ -35,8 +35,8 @@ public class TestCase {
 	@XmlElement(name = "estimated_exec_duration")
 	private String estimatedExecDuration;
 
-	@XmlElementWrapper(name="steps")
-	@XmlElement(name="step")
+	@XmlElementWrapper(name = "steps")
+	@XmlElement(name = "step")
 	private List<Step> steps = new ArrayList<Step>();
 
 	public String getName() {

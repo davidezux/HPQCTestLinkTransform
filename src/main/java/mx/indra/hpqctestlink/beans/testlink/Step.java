@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Step {
 
-	@XmlElement(name="step_number")
+	@XmlElement(name = "step_number")
 	private int stepNumber;
 
 	@XmlElement
@@ -20,12 +20,11 @@ public class Step {
 
 	@XmlElement(name = "execution_type")
 	private String executionType;
- 
 
 	public void setStepNumber(int stepNumber) {
 		this.stepNumber = stepNumber;
 	}
-	
+
 	public int getStepNumber() {
 		return stepNumber;
 	}

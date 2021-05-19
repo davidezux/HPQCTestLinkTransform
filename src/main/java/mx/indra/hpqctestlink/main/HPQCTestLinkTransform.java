@@ -1,6 +1,7 @@
 package mx.indra.hpqctestlink.main;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -13,13 +14,12 @@ import mx.indra.hpqctestlink.beans.Step;
 import mx.indra.hpqctestlink.beans.TestCase;
 import mx.indra.hpqctestlink.service.BuildXLSServiceImpl;
 import mx.indra.hpqctestlink.service.BuildXMLServiceImpl;
-import mx.indra.hpqctestlink.service.HPQCXLSProcessService;
-import mx.indra.hpqctestlink.service.ServiceInjector;
+import mx.indra.hpqctestlink.service.HPQCXLSProcessServiceImpl;
 
 public class HPQCTestLinkTransform {
 
 	private static final Logger LOG = LoggerFactory.getLogger(HPQCTestLinkTransform.class);
-	private static final String EXCEL_FILE_LOCATION = "C:/Users/dalara/Desktop/files/PR558_MD13_D3480_PruebasdeSistema_Ciclo01.xlsx";
+	private static final String EXCEL_FILE_LOCATION = "C:/Users/dalara/Desktop/files2/PR558_MD13_D3480_PruebasdeSistema_Ciclo01.xlsx";
 
 	public static void main(String[] args) {
 		// LOG.info("Ubicacion del archivo de origen : "+args[0]);
@@ -27,66 +27,57 @@ public class HPQCTestLinkTransform {
 		File excelFile = new File(EXCEL_FILE_LOCATION);
 		if (excelFile.exists()) {
 
-			ServiceInjector serviceInjector = new ServiceInjector();
-			HPQCXLSProcessService hpqcxlsProcessService = null;
-			hpqcxlsProcessService = serviceInjector.getHPQCXLSProcessService();
-			try {
+			if (excelFile.getName().endsWith("xlsx")) {
+				
+				HPQCXLSProcessServiceImpl hpqcxlsProcessServiceImpl = new HPQCXLSProcessServiceImpl();
 
-				MTCP mtcp = hpqcxlsProcessService.processXLS(excelFile);
+				try {
 
-				// ORDER TESTCASES
-				Collections.sort(mtcp.getTestCases(), new Comparator<TestCase>() {
-					public int compare(TestCase a1, TestCase a2) {
-						return a1.getNumber().intValue() - a2.getNumber().intValue();
-					}
-				});
+					MTCP mtcp = hpqcxlsProcessServiceImpl.processXLS(excelFile);
 
-				// GENERA EXCEL
-				BuildXLSServiceImpl buildXLSServiceImpl = new BuildXLSServiceImpl();
-				buildXLSServiceImpl.processTestCases(mtcp, excelFile);
+					// ORDER TESTCASES
+					Collections.sort(mtcp.getTestCases(), new Comparator<TestCase>() {
+						public int compare(TestCase a1, TestCase a2) {
+							return a1.getNumber().intValue() - a2.getNumber().intValue();
+						}
+					});
 
-				// GENERA XML
-				String outPutPath = excelFile.getParent() + "/" + excelFile.getName().split("\\.")[0] + ".xml";
-				BuildXMLServiceImpl buildXMLServiceImpl = new BuildXMLServiceImpl();
-				buildXMLServiceImpl.processTestCases(mtcp, outPutPath);
+					// PRINT TESTCASES
+                    
+					LOG.info("REGISTROS PROCESADOS " + (mtcp.getTestCases().size()+1));
+					// printList(mtcp.getTestCases());
 
-				/*
-				 * LOG.info("LIST SIZE " + mtcp.getTestCases().size());
-				 * 
-				 * for (int i = 0; i < mtcp.getTestCases().size(); i++) {
-				 * System.out.println("Test case : " + i); System.out.println("name : " +
-				 * mtcp.getTestCases().get(i).getName()); System.out.println("version : " +
-				 * mtcp.getTestCases().get(i).getVersion()); System.out.println("summary : " +
-				 * mtcp.getTestCases().get(i).getSummary());
-				 * System.out.println("preconditions: " +
-				 * mtcp.getTestCases().get(i).getPreconditions());
-				 * System.out.println("executionType: " +
-				 * mtcp.getTestCases().get(i).getExecutionType());
-				 * System.out.println("importance: " +
-				 * mtcp.getTestCases().get(i).getImportance());
-				 * System.out.println("estimatedExecDuration: " +
-				 * mtcp.getTestCases().get(i).getEstimatedExecDuration());
-				 * System.out.println("steps: ");
-				 * 
-				 * /*for(int j=0; j < mtcp.getTestCases().get(i).getSteps().size(); j++) {
-				 * System.out.println(mtcp.getTestCases().get(i).getSteps().get(j).getStepNumber
-				 * ());
-				 * System.out.println(mtcp.getTestCases().get(i).getSteps().get(j).getActions())
-				 * ; System.out.println(mtcp.getTestCases().get(i).getSteps().get(j).
-				 * getExpectedResults());
-				 * System.out.println(mtcp.getTestCases().get(i).getSteps().get(j).
-				 * getExecutionType2()); }
-				 * 
-				 * }
-				 */
+					// GENERA EXCEL
+					BuildXLSServiceImpl buildXLSServiceImpl = new BuildXLSServiceImpl();
+					buildXLSServiceImpl.processTestCases(mtcp, excelFile);
 
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+					// GENERA XML
+					String outPutPath = excelFile.getParent() + "/" + excelFile.getName().split("\\.")[0] + ".xml";
+					BuildXMLServiceImpl buildXMLServiceImpl = new BuildXMLServiceImpl();
+					buildXMLServiceImpl.processTestCases(mtcp, outPutPath);
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+			} else if (excelFile.getName().endsWith("xls")) {
+				//LOG.info("Formato de archivo Excel version 2003 o anteriores no son validos.");
+				System.out.println("El archivo de Excel version 2003 con extension xls no esta soportado , proposione un archivo de Excel 2007 o posterior con extencion xlsx");
+			
+				
+
+			} else {
+				//LOG.info("Formato de archivo no valido.");
+				System.out.println("El archivo especificado no es un archivo Excel valido (solo extenciones xlsx son validas)");
+				
 			}
 
+
 		} else {
-			LOG.info("Archivo no encontrado. Verificar que la ubicacion del archivo espeficifico sea el correcto");
+			System.out.println("Archivo no encontrado. Verificar que la ubicacion del archivo espeficifico sea el correcto");
+			//LOG.info("Archivo no encontrado. Verificar que la ubicacion del archivo espeficifico sea el correcto");
 		}
 
 	}

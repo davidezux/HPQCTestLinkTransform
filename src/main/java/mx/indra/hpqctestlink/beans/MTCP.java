@@ -3,7 +3,7 @@ package mx.indra.hpqctestlink.beans;
 import java.util.ArrayList;
 
 public class MTCP {
-	
+
 	private ArrayList<TestCase> testCases;
 
 	public ArrayList<TestCase> getTestCases() {
@@ -13,7 +13,5 @@ public class MTCP {
 	public void setTestCases(ArrayList<TestCase> testCases) {
 		this.testCases = testCases;
 	}
-	   
 
 }
-

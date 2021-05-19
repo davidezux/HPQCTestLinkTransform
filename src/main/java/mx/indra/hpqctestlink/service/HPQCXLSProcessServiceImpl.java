@@ -22,11 +22,9 @@ import mx.indra.hpqctestlink.beans.TestCase;
 public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(HPQCXLSProcessServiceImpl.class);
-	private ServiceInjector serviceInjector;
-	private UtilService utilService;
-	
+
 	public MTCP processXLS(File excelFile) throws Exception {
-	
+
 		MTCP mtcp = new MTCP();
 
 		ArrayList<TestCase> testCases = new ArrayList<TestCase>();
@@ -37,7 +35,7 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 			Workbook workbook = new XSSFWorkbook(inputStream);
 			Sheet firstSheet = workbook.getSheetAt(1);
 
-			LOG.info("TOTAL DE FILAS : " + firstSheet.getLastRowNum());
+			LOG.info("TOTAL DE REGISTROS : " + firstSheet.getLastRowNum());
 			Iterator<Row> iterator = firstSheet.iterator();
 
 			while (iterator.hasNext()) {
@@ -54,7 +52,7 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 
 						Cell celldata = (Cell) cellIterator.next();
 						int columnIndex = celldata.getColumnIndex();
-						int rowIndex = celldata.getRowIndex();
+						//int rowIndex = celldata.getRowIndex();
 						// System.out.print(rowIndex + " " + columnIndex +"-");
 						switch (celldata.getCellType()) {
 						case STRING:
@@ -62,41 +60,32 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 							// GEENERAR LISTA DE ACCIONES (PASOS)
 							if (columnIndex == 0) {
 								testCase.setSummary(celldata.getStringCellValue());
-
-							}else if(columnIndex == 1) {
+							} else if (columnIndex == 1) {
 								String summary = testCase.getSummary() + celldata.getStringCellValue();
 								testCase.setSummary(summary);
-							
-								
-							}else if(columnIndex == 2) {
-								testCase.setName("CP"+celldata.getStringCellValue()+"_");
+							} else if (columnIndex == 2) {
+								testCase.setName("CP" + celldata.getStringCellValue() + "_");
 								testCase.setNumber(Long.valueOf(celldata.getStringCellValue()));
-								
-							}else if (columnIndex == 3) {
+							} else if (columnIndex == 3) {
 								String name = testCase.getName() + celldata.getStringCellValue();
 								testCase.setName(name);
 								// System.out.print(celldata.getStringCellValue());
 							} else if (columnIndex == 4) {
-
 								StringTokenizer tokens = new StringTokenizer(celldata.getStringCellValue(), "\n");
 								List<String> headers = new ArrayList<String>();
 								List<String> steps = new ArrayList<String>();
-								
+
 								while (tokens.hasMoreTokens()) {
 									String line = tokens.nextToken();
-									if(line.trim().endsWith(":")) {
-										//System.out.println(line);
-										
+									if (line.trim().endsWith(":")) {
+										// System.out.println(line);
 										headers.add(line);
-									}else {
+									} else {
 										steps.add(line);
 									}
 								}
-								
-								serviceInjector = new ServiceInjector();
-								utilService = serviceInjector.getUtilService();
-								listSteps = utilService.getSteps(headers,steps);
-								
+
+								listSteps = getSteps(headers, steps);
 
 							} else if (columnIndex == 5) {
 
@@ -114,12 +103,12 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 								testCase.setImportance(celldata.getStringCellValue());
 								// System.out.print(celldata.getStringCellValue());
 							} else if (columnIndex == 9) {
-								
+
 								for (int i = 0; i < listSteps.size(); i++) {
 									listSteps.get(i).setExecutionType2(celldata.getStringCellValue());
 								}
-								
-							}else if (columnIndex == 10) {
+
+							} else if (columnIndex == 10) {
 								testCase.setEstimatedExecDuration(celldata.getStringCellValue());
 								// System.out.print(celldata.getStringCellValue());
 							}
@@ -158,7 +147,56 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 
 		return mtcp;
 	}
-	
-	
+
+	// FUNCION ENCARGADA DE AJUSTAR EL ENCABEZADO DE PASOS SI EL ENCABEZADO CONTIENE
+	// MAS DE UNA DESCRIPCION
+	public ArrayList<Step> getSteps(List<String> headers, List<String> steps) {
+
+		ArrayList<Step> listSteps = new ArrayList<Step>();
+		String header = "";
+		String aux = "";
+		
+		// System.out.println("HEADERS SIZE:" + headers.size());
+		// System.out.println("HEADERS SIZE:" + headers.get);
+		if (headers.size() >= 2) {
+			for (int i = 0; i < headers.size(); i++) {
+				if (i != headers.size() - 1) {
+					aux += headers.get(i).substring(0, headers.get(i).length() - 1).concat(",");
+				} else {
+					header += aux + headers.get(i);
+					// System.out.println("aux:" + aux);
+					// System.out.println("header:" + header);
+				}
+			}
+
+			Step step = new Step();
+			step.setStepNumber(new Long(0));
+			step.setActions(header);
+			listSteps.add(step);
+		} else {
+
+			Step step = new Step();
+			step.setStepNumber(new Long(0));
+			step.setActions(headers.get(0));
+			listSteps.add(step);
+		}
+
+		// System.out.println("STEPS SIZE:" + steps.size());
+
+		for (int i = 0; i < steps.size(); i++) {
+			Step step = new Step();
+			step.setStepNumber(new Long(i) + 1);
+			step.setActions(steps.get(i));
+			listSteps.add(step);
+		}
+
+		/*
+		 * for(int i=0; i < listSteps.size(); i++) {
+		 * System.out.println(listSteps.get(i).getStepNumber());
+		 * System.out.println(listSteps.get(i).getActions()); }
+		 */
+
+		return listSteps;
+	}
 
 }

@@ -11,8 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "testcases")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class XmlRoot {
- 
-	
+
 	@XmlElement(name = "testcase")
 	private List<TestCase> testCases = new ArrayList<TestCase>();
 

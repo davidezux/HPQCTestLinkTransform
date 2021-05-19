@@ -13,9 +13,7 @@ public class TestCase {
 	private String importance;
 	private String estimatedExecDuration;
 	private ArrayList<Step> steps;
-	
-	
-	
+
 	public Long getNumber() {
 		return number;
 	}
@@ -87,6 +85,5 @@ public class TestCase {
 	public void setSteps(ArrayList<Step> steps) {
 		this.steps = steps;
 	}
-
 
 }
