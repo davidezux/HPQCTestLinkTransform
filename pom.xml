@@ -16,7 +16,6 @@
 		<!-- Logging -->
 		<slf4j.version>1.6.6</slf4j.version>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>

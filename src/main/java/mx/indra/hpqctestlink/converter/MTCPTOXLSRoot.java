@@ -5,7 +5,6 @@ import java.util.List;
 
 import mx.indra.hpqc.testlink.beans.xls.XLSRoot;
 import mx.indra.hpqc.testlink.beans.xls.XLSStep;
-import mx.indra.hpqc.testlink.beans.xls.XLSTestCaseRoot;
 import mx.indra.hpqctestlink.beans.MTCP;
 
 public class MTCPTOXLSRoot {
