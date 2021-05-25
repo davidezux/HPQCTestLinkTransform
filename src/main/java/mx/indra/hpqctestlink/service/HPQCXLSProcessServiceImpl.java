@@ -37,7 +37,7 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 
 			LOG.info("TOTAL DE REGISTROS : " + firstSheet.getLastRowNum());
 			Iterator<Row> iterator = firstSheet.iterator();
-
+		
 			while (iterator.hasNext()) {
 				Row nextRow = iterator.next();
 				Iterator<Cell> cellIterator = nextRow.cellIterator();
@@ -47,13 +47,13 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 
 					TestCase testCase = new TestCase();
 					ArrayList<Step> listSteps = new ArrayList<Step>();
-
+					System.out.println("");
 					while (cellIterator.hasNext()) {
 
 						Cell celldata = (Cell) cellIterator.next();
 						int columnIndex = celldata.getColumnIndex();
 						//int rowIndex = celldata.getRowIndex();
-						// System.out.print(rowIndex + " " + columnIndex +"-");
+						//System.out.print(rowIndex + "-" + columnIndex +" ");
 						switch (celldata.getCellType()) {
 						case STRING:
 
@@ -61,31 +61,74 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 							if (columnIndex == 0) {
 								testCase.setSummary(celldata.getStringCellValue());
 							} else if (columnIndex == 1) {
-								String summary = testCase.getSummary() + celldata.getStringCellValue();
+								String summary = testCase.getSummary() +"_"+ celldata.getStringCellValue();
 								testCase.setSummary(summary);
 							} else if (columnIndex == 2) {
-								testCase.setName("CP" + celldata.getStringCellValue() + "_");
+								
+								testCase.setName(getTestID(celldata.getStringCellValue()));
 								testCase.setNumber(Long.valueOf(celldata.getStringCellValue()));
+								
+								
 							} else if (columnIndex == 3) {
-								String name = testCase.getName() + celldata.getStringCellValue();
+								String name = testCase.getName() + "_"+  celldata.getStringCellValue();
 								testCase.setName(name);
 								// System.out.print(celldata.getStringCellValue());
 							} else if (columnIndex == 4) {
 								StringTokenizer tokens = new StringTokenizer(celldata.getStringCellValue(), "\n");
+								
+								//System.out.println("tokens: " + tokens.countTokens());
+								if(tokens.countTokens()==1) {
+									
+									List<String> headers = new ArrayList<String>();
+									List<String> steps = new ArrayList<String>();
+									List<String> subSteps = new ArrayList<String>();
+									
+									while (tokens.hasMoreTokens()) {
+										String line = tokens.nextToken();
+										
+										//System.out.println("line: " + line);
+					
+										headers.add(line);
+										
+									}
+									
+									listSteps = getSteps(headers, steps,subSteps);
+									
+									
+								}else {
+								
+								
 								List<String> headers = new ArrayList<String>();
 								List<String> steps = new ArrayList<String>();
+								List<String> subSteps = new ArrayList<String>();
 
+								String aux = "";
+		
 								while (tokens.hasMoreTokens()) {
 									String line = tokens.nextToken();
-									if (line.trim().endsWith(":")) {
+									
+									//System.out.println("line: " + line.trim().charAt(0));
+									
+									if (Character.isDigit(line.trim().charAt(0))) {
 										// System.out.println(line);
-										headers.add(line);
-									} else {
 										steps.add(line);
+			                            aux="";
+										
+									} else if(line.trim().startsWith("*") || line.trim().startsWith("-")){
+										
+										int currentStep = steps.size();
+										aux = steps.get(currentStep-1) + line.concat(",");
+										steps.set(currentStep-1, aux);
+										
+										subSteps.add(line);
+									}else {
+										headers.add(line);
 									}
 								}
 
-								listSteps = getSteps(headers, steps);
+								listSteps = getSteps(headers, steps, subSteps);
+								
+								}
 
 							} else if (columnIndex == 5) {
 
@@ -130,7 +173,11 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 
 					testCase.setSteps(listSteps);
 					testCase.setVersion("Ciclo01");
+					
+					//System.out.print("listSteps " + listSteps.isEmpty());
+					if(!listSteps.isEmpty()) {
 					testCases.add(testCase);
+					}
 				}
 
 			}
@@ -150,22 +197,22 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 
 	// FUNCION ENCARGADA DE AJUSTAR EL ENCABEZADO DE PASOS SI EL ENCABEZADO CONTIENE
 	// MAS DE UNA DESCRIPCION
-	public ArrayList<Step> getSteps(List<String> headers, List<String> steps) {
+	public ArrayList<Step> getSteps(List<String> headers, List<String> steps, List<String> subSteps) {
 
 		ArrayList<Step> listSteps = new ArrayList<Step>();
 		String header = "";
 		String aux = "";
 		
-		// System.out.println("HEADERS SIZE:" + headers.size());
-		// System.out.println("HEADERS SIZE:" + headers.get);
+		//System.out.println("HEADERS SIZE:" + headers.size());
+
 		if (headers.size() >= 2) {
 			for (int i = 0; i < headers.size(); i++) {
 				if (i != headers.size() - 1) {
 					aux += headers.get(i).substring(0, headers.get(i).length() - 1).concat(",");
 				} else {
 					header += aux + headers.get(i);
-					// System.out.println("aux:" + aux);
-					// System.out.println("header:" + header);
+					//System.out.println("aux:" + aux);
+					//System.out.println("header:" + header);
 				}
 			}
 
@@ -180,7 +227,7 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 			step.setActions(headers.get(0));
 			listSteps.add(step);
 		}
-
+	
 		// System.out.println("STEPS SIZE:" + steps.size());
 
 		for (int i = 0; i < steps.size(); i++) {
@@ -190,6 +237,12 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 			listSteps.add(step);
 		}
 
+		/*System.out.println("SUB STEPS SIZE:" + subSteps.size());
+		
+		for (int i = 0; i < subSteps.size(); i++) {
+			System.out.println("substep: " + subSteps.get(i));
+		}*/
+		
 		/*
 		 * for(int i=0; i < listSteps.size(); i++) {
 		 * System.out.println(listSteps.get(i).getStepNumber());
@@ -199,4 +252,24 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 		return listSteps;
 	}
 
+	public String getTestID(String testId) {
+		
+		Long idNumber = Long.valueOf(testId);
+		
+		String prefix = "";
+		
+		//System.out.println("IdPrueba:" + idNumber);
+		
+		if(idNumber<=9) {
+			prefix= "CP00" + String.valueOf(idNumber);
+		}else if(idNumber<=99) {
+			prefix= "CP0" + String.valueOf(idNumber);
+		}else if(idNumber<=999) {
+			prefix= "CP" + String.valueOf(idNumber);
+		}
+		
+	   return prefix;
+	}
+	
+	
 }

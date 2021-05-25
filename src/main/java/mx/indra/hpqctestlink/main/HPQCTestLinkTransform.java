@@ -18,8 +18,11 @@ import mx.indra.hpqctestlink.service.HPQCXLSProcessServiceImpl;
 public class HPQCTestLinkTransform {
 
 	private static final Logger LOG = LoggerFactory.getLogger(HPQCTestLinkTransform.class);
-	//private static final String EXCEL_FILE_LOCATION = "C:/Users/dalara/Desktop/files2/PR558_MD13_D3480_PruebasdeSistema_Ciclo01.xlsx";
-
+	private static final String EXCEL_FILE_LOCATION = "C:/Users/dalara/Desktop/files3/PR612_MD1_D3585_PruebasdeSistema_Ciclo01.xlsm";
+     //private static final String EXCEL_FILE_LOCATION = "C:/Users/dalara/Desktop/files2/421 - ET-00143 - MXSAB - 1563 - Domiciliación Emisión/01 - Cuentas y caja/3180/Pruebas de Integración/PR421_MD1_D3180_PruebasdeIntegracion_Ciclo01.xlsm";
+	//private static final  String EXCEL_FILE_LOCATION = "C:/Users/dalara/Desktop/files2/421 - ET-00143 - MXSAB - 1563 - Domiciliación Emisión/01 - Cuentas y caja/3180/Pruebas de Regresión/PR421_MD1_D3180_PruebasdeRegresion_Ciclo01.xlsm";
+	//
+	
 	public static void main(String[] args) {
 		// LOG.info("Ubicacion del archivo de origen : "+args[0]);
 		// LOG.info("Ubicacion destino: "+args[1]);
@@ -28,14 +31,18 @@ public class HPQCTestLinkTransform {
 		File excelFile = new File(EXCEL_FILE_LOCATION_ARG);
 		if (excelFile.exists()) {
 
-			if (excelFile.getName().endsWith("xlsx")) {
+			if (excelFile.getName().endsWith("xlsx") || excelFile.getName().endsWith("xlsm")) {
 				
 				HPQCXLSProcessServiceImpl hpqcxlsProcessServiceImpl = new HPQCXLSProcessServiceImpl();
 
 				try {
 
 					MTCP mtcp = hpqcxlsProcessServiceImpl.processXLS(excelFile);
-
+					
+					// PRINT TESTCASES
+					LOG.info("REGISTROS PROCESADOS " + (mtcp.getTestCases().size()+1));
+					//printList(mtcp.getTestCases());
+					
 					// ORDER TESTCASES
 					Collections.sort(mtcp.getTestCases(), new Comparator<TestCase>() {
 						public int compare(TestCase a1, TestCase a2) {
@@ -43,10 +50,6 @@ public class HPQCTestLinkTransform {
 						}
 					});
 
-					// PRINT TESTCASES
-                    
-					LOG.info("REGISTROS PROCESADOS " + (mtcp.getTestCases().size()+1));
-					// printList(mtcp.getTestCases());
 
 					// GENERA EXCEL
 					BuildXLSServiceImpl buildXLSServiceImpl = new BuildXLSServiceImpl();

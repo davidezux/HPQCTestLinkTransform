@@ -168,7 +168,7 @@ public class BuildXLSServiceImpl implements BuildXLSService {
 
 	public static Workbook getWorkbook(File excelFile) throws Exception {
 		Workbook workbook = null;
-		if (excelFile.getName().endsWith("xlsx")) {
+		if (excelFile.getName().endsWith("xlsx") || excelFile.getName().endsWith("xlsm")) {
 			workbook = new XSSFWorkbook();
 		} else if (excelFile.getName().endsWith("xls")) {
 			workbook = new HSSFWorkbook();
@@ -181,7 +181,7 @@ public class BuildXLSServiceImpl implements BuildXLSService {
 
 	public static void writeWorkbook(Workbook workbook, File excelFile) throws Exception {
 
-		if (excelFile.getName().endsWith("xlsx")) {
+		if (excelFile.getName().endsWith("xlsx") || excelFile.getName().endsWith("xlsm")) {
 
 			String outputPath = excelFile.getParent() + "/" + excelFile.getName().split("\\.")[0] + "_tl.xlsx";
 			File outputFile = new File(outputPath);
