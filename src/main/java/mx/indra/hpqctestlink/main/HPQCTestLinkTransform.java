@@ -18,11 +18,10 @@ import mx.indra.hpqctestlink.service.HPQCXLSProcessServiceImpl;
 public class HPQCTestLinkTransform {
 
 	private static final Logger LOG = LoggerFactory.getLogger(HPQCTestLinkTransform.class);
-	private static final String EXCEL_FILE_LOCATION = "C:/Users/dalara/Desktop/files3/PR612_MD1_D3585_PruebasdeSistema_Ciclo01.xlsm";
+	private static final String EXCEL_FILE_LOCATION = "C:/Users/dalara/Desktop/files3/PR612_MD1_D3585_ModificadoPruebasdeSistema_Ciclo01.xlsm";
      //private static final String EXCEL_FILE_LOCATION = "C:/Users/dalara/Desktop/files2/421 - ET-00143 - MXSAB - 1563 - Domiciliación Emisión/01 - Cuentas y caja/3180/Pruebas de Integración/PR421_MD1_D3180_PruebasdeIntegracion_Ciclo01.xlsm";
 	//private static final  String EXCEL_FILE_LOCATION = "C:/Users/dalara/Desktop/files2/421 - ET-00143 - MXSAB - 1563 - Domiciliación Emisión/01 - Cuentas y caja/3180/Pruebas de Regresión/PR421_MD1_D3180_PruebasdeRegresion_Ciclo01.xlsm";
-	//
-	
+
 	public static void main(String[] args) {
 		// LOG.info("Ubicacion del archivo de origen : "+args[0]);
 		// LOG.info("Ubicacion destino: "+args[1]);
@@ -61,8 +60,8 @@ public class HPQCTestLinkTransform {
 					buildXMLServiceImpl.processTestCases(mtcp, outPutPath);
 
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("Layout no soportado. Revise las consideraciones aplicacbles a la columna E hoja2 (descripcion) que contiene la lista de pasos.");
+					//e.printStackTrace();
 				}
 				
 				

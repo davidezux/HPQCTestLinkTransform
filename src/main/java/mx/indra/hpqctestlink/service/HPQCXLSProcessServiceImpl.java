@@ -47,7 +47,6 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 
 					TestCase testCase = new TestCase();
 					ArrayList<Step> listSteps = new ArrayList<Step>();
-					System.out.println("");
 					while (cellIterator.hasNext()) {
 
 						Cell celldata = (Cell) cellIterator.next();
@@ -186,7 +185,7 @@ public class HPQCXLSProcessServiceImpl implements HPQCXLSProcessService {
 			inputStream.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw e;
 		}
 
